@@ -1,6 +1,6 @@
-#! /usr/bin/env python
+#! /usr/bin/env python -i
 
-import pnt
+import pnt, off
 import matplotlib
 import matplotlib.cm as cm
 import matplotlib.mlab as mlab
@@ -24,5 +24,33 @@ with gzip.open("1940.pkz", "rb") as f:
 print "contouring"
 
 plt.figure()
-CS = plt.contour(g.a, 10)
-plt.show()
+#CS = plt.contour(g.a, 10)
+CS = plt.contourf(g.a, 10)
+
+collections = CS.collections
+levels = CS.levels               # NOTE: len(collections) = len(levels)
+
+polylists = []
+for coll in collections:
+    plist = []
+    for p in coll.get_paths():
+        p.simplify_threshold = 0.0
+        plist = plist + p.to_polygons()
+    polylists.append(plist)
+
+g = pnt.PntGrid()
+
+off = off.Off()
+for i in range(0,len(collections)):
+    level    = CS.levels[i]
+    for polygon in polylists[i]:
+        face = []
+        for p in polygon:
+            p[0] # x
+            p[1] # y
+            level # z
+            face.append([ g.xTr.int_to_float(p[0]), g.yTr.int_to_float(p[1]), level ])
+        off.add_face(face)
+off.write("foo.off")
+
+#plt.show()

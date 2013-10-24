@@ -1,0 +1,51 @@
+#! /usr/bin/python
+"""
+   usage: makevect N FILE
+
+makes a geomview vect file using every N-th line from a *.pnt FILE
+"""
+
+import re, os, sys
+
+N = int( sys.argv[1] )
+filename = sys.argv[2]
+
+if not os.path.exists(filename):
+    print "file '%s' not found" % (filename)
+    sys.exit(-1)
+
+with open(filename) as f:
+    lines = []
+    lines0 = []
+    n = 0
+    for line in f.readlines():
+        n = n + 1
+        line = line.strip()
+        if line != "":
+            if n % N == 0:
+                y,x,t = [float(a) for a in re.split(r'\s+', line)]
+                lines.append("%f %f %f" % (x,y,t))
+                lines0.append("%f %f %f" % (x,y,0))
+
+M = len(lines)
+
+filebase = re.sub(r'\.pnt$', '', filename)
+outfile = "%s-%1d.vect" % (filebase, N)
+
+print("writing vect file with %1d points: %s" % (M,outfile))
+with open(outfile, "w") as f:
+    f.write("VECT\n")
+    f.write("%1d %1d %1d\n" % (M, M, 0))
+    f.write(" ".join(["1"] * M) + "\n")
+    f.write(" ".join(["0"] * M) + "\n")
+    f.write("\n".join(lines) + "\n")
+
+# outfile = "199702-%1d.0.vect" % N
+# print("writing level-0 vect file with %1d points: %s" % (M,outfile))
+# f = open(outfile, "w")
+# f.write("VECT\n")
+# f.write("%1d %1d %1d\n" % (M, M, 0))
+# f.write(" ".join(["1"] * M) + "\n")
+# f.write(" ".join(["0"] * M) + "\n")
+# f.write("\n".join(lines0) + "\n")
+# f.close()

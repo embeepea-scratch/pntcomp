@@ -1,0 +1,28 @@
+#! /usr/bin/env python
+
+import pnt
+import matplotlib
+import matplotlib.cm as cm
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plt
+
+import pickle, gzip
+
+# print "loading"
+# pfile = pnt.PntFile("1940.pnt")
+# print "gridding"
+# g = pnt.PntGrid()
+# g.load_pntfile(pfile)
+# 
+# print "pickling"
+# with gzip.open("1940.pkz", "wb") as f:
+#      pickle.dump(g, f)
+
+with gzip.open("1940.pkz", "rb") as f:
+    g = pickle.load(f)
+
+print "contouring"
+
+plt.figure()
+CS = plt.contour(g.a, 10)
+plt.show()

@@ -1,0 +1,5 @@
+{
+  LIST
+    { appearance { material { *edgecolor 0.305053 0.407843 0.311685 } } < 199702-5.0.vect }
+    { < 199702-1.vect }
+}

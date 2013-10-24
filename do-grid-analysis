@@ -1,0 +1,188 @@
+#! /usr/bin/env python -i
+
+"""
+This script contains scratch code that I used while trying to figure out
+the grid used in pnt files.  This script is not needed any more, but I'm
+keeping it around for a while for reference.
+"""
+
+import re, sys
+import matplotlib
+import numpy as np
+import matplotlib.cm as cm
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plt
+
+nodata = np.nan
+
+class LinearFloatIntInterpolator:
+    def __init__(self, amin, astep):
+        self.amin = amin
+        self.astep = astep
+    def float_to_int(self, a):
+        return int(round((a - self.amin) / self.astep))
+    def int_to_float(self, i):
+        return self.amin + i*self.astep
+
+#class LinearFloatIntInterpolator:
+#    def __init__(self, amin, amax, nsteps):
+#        self.amin = amin
+#        self.amax = amax
+#        self.nsteps = nsteps
+#        self.astep = float(self.amax - self.amin) / float(self.nsteps - 1)
+#        self.iOffset = 0;
+#    def float_to_int(self, a):
+#        return int(round((a - self.amin) / self.astep)) - self.iOffset
+#    def int_to_float(self, i):
+#        return self.amin + (i+self.iOffset)*self.astep
+
+#def lfiiFromBaseD(base,d,iOffset=0):
+#    n = 10
+#    lfii = LinearFloatIntInterpolator(base-n*d, base+n*d, 2*n)
+#    lfii.iOffset = iOffset
+#    return lfii
+
+def infer_xy_grid(filename):
+    """Read a single pnt file and print out 2 lines of code that create instances
+    of the LinearFloatIntInterpolator class above which can be used to convert between
+    the floating point lon,lat coords of the pnt file, and an NxM integer grid."""
+    f = open(filename, "r")
+    Xstr = {}
+    Ystr = {}
+    for line in f.readlines():
+        y,x,t = re.split(r'\s+', line.strip())
+        Xstr[x] = True
+        Ystr[y] = True
+    f.close()
+    X = [float(x) for x in Xstr]
+    Y = [float(y) for y in Ystr]
+    print "xTr = LinearFloatIntInterpolator(%f, %f, %d)" % (min(X), max(X), len(X))
+    print "yTr = LinearFloatIntInterpolator(%f, %f, %d)" % (min(Y), max(Y), len(Y))
+    #Xs = [x[0] for x in sorted([[x,float(x)] for x in Xstr], key=lambda p: p[1])]
+    #Ys = [y[0] for y in sorted([[y,float(y)] for y in Ystr], key=lambda p: p[1])]
+    #print "xStr = [ %s ]" % ",".join(["'"+x+"'" for x in Xs])
+    #print "yStr = [ %s ]" % ",".join(["'"+y+"'" for y in Ys])
+
+def check(cond, msg):
+    if not cond:
+        print msg
+
+def xy(filename):
+    f = open(filename, "r")
+    X = []
+    Y = []
+    for line in f.readlines():
+        y,x,t = [float(a) for a in re.split(r'\s+', line.strip())]
+        X.append(x)
+        Y.append(y)
+    f.close()
+    return [X,Y]
+
+def check_grid(filename, xTr, yTr):
+    f = open(filename, "r")
+    for line in f.readlines():
+        y,x,t = [float(a) for a in re.split(r'\s+', line.strip())]
+        i = yTr.float_to_int(y)
+        check(i >= 0, "i=%1d < 0" % i)
+        check(i < yTr.nsteps, "i=%1dd > %1d" % (i, yTr.nsteps))
+        check(abs(yTr.int_to_float(i) - y) < 0.0001, "i,y=%1d,%f (!=%f) conv fails" % (i,y,yTr.int_to_float(i)))
+
+        j = xTr.float_to_int(x)
+        check(j >= 0, "j=%1d < 0" % j)
+        check(j < xTr.nsteps, "j=%1dd > %1d" % (j, xTr.nsteps))
+        check(abs(xTr.int_to_float(j) - x) < 0.0001, "j,x=%1d,%f conv fails" % (j,x))
+    f.close()
+
+nX = 1385
+#nY = 584
+nY = 596
+gridsize = 1/24.0
+minX = -124.6875
+minY = 24.5625
+
+def load_grid(filename, xTr, yTr):
+    f = open(filename, "r")
+    #T = [ [nodata] * nX ] * nY
+    T = [x[:] for x in [[nodata]*nX]*nY]
+    used = {}
+    for line in f.readlines():
+        y,x,t = [float(a) for a in re.split(r'\s+', line.strip())]
+        i = yTr.float_to_int(y)
+        j = xTr.float_to_int(x)
+        k = "%1d,%1d" % (i,j)
+        if k in used:
+            print "warning: duplication for k=%s" % k
+        else:
+            used[k] = True
+        try:
+            #print "T[%4d][%4d] <-- %f" % (i,j,t)
+            T[i][j] = t
+        except IndexError:
+            print "index out of range for k=%s" % k
+    f.close()
+    if T[213] == T[512]:
+        print "two random rows are equal"
+    return T
+
+#d = 0.0417 # (or 1/24.0 ???)
+
+
+xTr = LinearFloatIntInterpolator(minX, gridsize)
+yTr = LinearFloatIntInterpolator(minY, gridsize)
+
+T = load_grid("199702.pnt", xTr, yTr)
+
+if T[213] == T[512]:
+    print "two random rows are still equal"
+
+# f = open("199702.pnt", "r")
+# Xs = []
+# Ys = []
+# for line in f.readlines():
+#     y,x,t = re.split(r'\s+', line.strip())
+#     Xs.append(x)
+#     Ys.append(y)
+# f.close()
+
+# def histo(Z):
+#     h = {}
+#     for z in Z:
+#         if z not in h:
+#             h[z] = 0
+#         h[z] = h[z] + 1
+#     return sorted([[z,h[z]] for z in h], key=lambda a: -a[1])
+# 
+# hX = histo(Xs)
+# hY = histo(Ys)
+# 
+# X = sorted([float(h[0]) for h in hX])
+# Y = sorted([float(h[0]) for h in hY])
+# 
+# dX = [abs(X[i] - X[i+1]) for i in range(0,len(X)-1)]
+# dY = [abs(Y[i] - Y[i+1]) for i in range(0,len(Y)-1)]
+# 
+# hdX = histo(dX)
+# hdY = histo(dY)
+
+        
+## ## # output of infer_xy_grid("199702.pnt")
+# xTr = LinearFloatIntInterpolator(-124.687500, -67.020900, 1385)
+# yTr = LinearFloatIntInterpolator(24.562500, 49.354200, 584)
+
+
+# T,used = load_grid("199702.pnt", xTr, yTr)
+
+## 
+## check_grid("199702.pnt", xTr, yTr)
+## 
+## sys.exit(0)
+## 
+## 
+## def pT(T,i,j):
+##     print "%.4f %.4f [%5d,%5d]     %f" % (yTr.int_to_float(i), xTr.int_to_float(j), i, j, T[i][j])
+## 
+## for i in range(0,5):
+##     for j in range(0,5):
+##         t,x,y,i2,j2 = T[i][j]
+##         print "i=%5d [%5d]  j=%5d [%5d]  x=%10.4f  y=%10.4f  t=%10.4f" % (i,i2,j,j2,x,y,t)
+##

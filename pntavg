@@ -1,0 +1,17 @@
+#! /usr/bin/env python
+
+import pnt, sys, optparse
+import numpy as np
+
+parser = optparse.OptionParser('pntavg OUTPUT_FILE INPUT_FILE [...]')
+
+(opts, args) = parser.parse_args()
+
+if len(args) < 2:
+    print "usage: pntavg OUTPUT_FILE INPUT_FILE [...]"
+    sys.exit(0)
+
+outfile = args.pop(0)
+p = pnt.Pnt.avg(args)
+print "writing %s" % outfile
+p.write(outfile)

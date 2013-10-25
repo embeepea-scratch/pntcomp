@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>My Test d3 Page</title>
+		<script type="text/javascript" src="d3.v3.js"></script>
+		<style type="text/css">
+#visdiv {
+  border: 1px solid black;
+}
+#visdiv svg {
+  border: 1px solid red;
+}
+
+/*
+#visdiv svg .bigrect {
+  opacity: 0.6;
+}
+*/
+
+#visdiv svg .level {
+  opacity: 0.6;
+}
+
+#visdiv svg .level:hover {
+  opacity: 1.0;
+}
+
+			/* No style rules here yet */		
+		</style>
+	</head>
+	<body>
+<p>here's a cool d3 vis:</p>
+<div id="visdiv"></div>
+<p>that's all folks!</p>
+		<script type="text/javascript">
+
+var width = 1400;
+var height = 800;
+
+var dataset = [ 5, 10, 15, 20, 25 ];
+
+var svg = d3.select("#visdiv")
+            .append("svg")
+            .attr("width", width)
+            .attr("height",height);
+
+
+			//Define map projection
+			var projection = d3.geo.albersUsa()
+								   .translate([width/2, height/2])
+								   .scale([width]);
+
+			//Define path generator
+			var path = d3.geo.path()
+							 .projection(projection);
+
+
+            function dolevel(jsonfile, classname, style) {
+                var g = svg.append("g")
+                           .attr("class", classname);
+                d3.json(jsonfile, function(json) {
+    				  g.selectAll("path")
+    				   .data(json.features)
+    				   .enter()
+    				   .append("path")
+    				   .attr("d", path)
+                       .style(style)
+                       ;
+    			});
+            }
+
+
+
+/*				
+			d3.json("us-states.json", function(json) {
+				svg.append("g")
+                   .attr("class", "us-states")
+                   .selectAll("path")
+				   .data(json.features)
+				   .enter()
+				   .append("path")
+				   .attr("d", path)
+				   .style("fill", "steelblue");
+*/
+
+                dolevel("tavg-1981-2010--1901-1960-00.json", "level", { "fill" : "#ffffff", "stroke" : "black" });
+                dolevel("tavg-1981-2010--1901-1960-01.json", "level", { "fill" : "#ffcccc", "stroke" : "black" });
+                dolevel("tavg-1981-2010--1901-1960-02.json", "level", { "fill" : "#ffaaaa", "stroke" : "black" });
+                dolevel("tavg-1981-2010--1901-1960-03.json", "level", { "fill" : "#ff8888", "stroke" : "black" });
+                dolevel("tavg-1981-2010--1901-1960-04.json", "level", { "fill" : "#ff6666", "stroke" : "black" });
+                dolevel("tavg-1981-2010--1901-1960-05.json", "level", { "fill" : "#ff4444", "stroke" : "black" });
+                dolevel("tavg-1981-2010--1901-1960-06.json", "level", { "fill" : "#ff2222", "stroke" : "black" });
+                dolevel("tavg-1981-2010--1901-1960-07.json", "level", { "fill" : "#ff0000", "stroke" : "black" });
+
+                dolevel("us-states.json", "us-states", { "fill" : "none", "stroke" : "black" });
+		
+//			});
+
+/*
+svg.selectAll("circle")
+   .data(dataset)
+   .enter()
+   .append("circle")
+   .attr("cx", function (d,i) { return (i * 50) + 25; })
+   .attr("cy", height/2)
+   .attr("r", function (d) { return d; })
+*/
+		</script>
+	</body>
+</html>

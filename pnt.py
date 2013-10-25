@@ -44,6 +44,19 @@ class PntFile:
             presult.a[i,1] = pfiles[0].a[i,1] # y
             presult.a[i,2] = sum( [ p.a[i,2] for p in pfiles ] ) / nfiles
         return presult
+    @staticmethod
+    def subtract(filename_a,filename_b):
+        presult = PntFile()
+        print "loading %s" % filename_a
+        pfile_a = PntFile(filename_a)
+        print "loading %s" % filename_b
+        pfile_b = PntFile(filename_b)
+        print "computing difference"
+        for i in range(0,presult.npoints):
+            presult.a[i,0] = pfile_a.a[i,0] # x
+            presult.a[i,1] = pfile_a.a[i,1] # y
+            presult.a[i,2] = pfile_a.a[i,2] - pfile_b.a[i,2]
+        return presult
 
 class PntGrid:
     def __init__(self):

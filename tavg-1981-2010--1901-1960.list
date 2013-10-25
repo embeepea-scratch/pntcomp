@@ -1,0 +1,6 @@
+{
+  LIST
+    { appearance { material { *edgecolor 0.305053 0.407843 0.311685 } } < 199702-5.0.vect }
+    { < tavg-1981-2010--1901-1960-2.vect }
+    { < tavg-1981-2010--1901-1960.off }
+}

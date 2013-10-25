@@ -1,0 +1,21 @@
+#! /usr/bin/env python
+
+import pnt, sys, optparse
+import numpy as np
+
+usage = "usage: pntsubtract OUTFILE FILE_A FILE_B     # computes OUTFILE = FILE_A - FILE_B"
+
+parser = optparse.OptionParser(usage)
+
+(opts, args) = parser.parse_args()
+
+if len(args) < 3:
+    print usage
+    sys.exit(0)
+
+outfile = args.pop(0)
+file_a = args.pop(0)
+file_b = args.pop(0)
+p = pnt.PntFile.subtract(file_a, file_b)
+print "writing %s" % outfile
+p.write(outfile)

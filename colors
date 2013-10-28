@@ -1,0 +1,40 @@
+#! /usr/bin/env python
+
+import re, math, colorsys
+
+def hex_to_rgb( rgb ):
+    rgb = re.sub(r'^.*0x', '', re.sub(r'^.*#', '', rgb))
+    (rHexString, gHexString, bHexString) = (rgb[0:2], rgb[2:4], rgb[4:6])
+    R = int(rHexString, 16) / 255.0
+    G = int(gHexString, 16) / 255.0
+    B = int(bHexString, 16) / 255.0
+    return (R,G,B)
+
+def rgb_to_hex( rgb ):
+    return "#%02x%02x%02x" % (rgb[0] * 255, rgb[1] * 255, rgb[2] * 255)
+
+
+def highlight( f, rgbhex ):
+    rgb = hex_to_rgb( rgbhex )
+    (h,s,v) = colorsys.rgb_to_hsv( rgb[0], rgb[1], rgb[2] )
+    s = s + f * (1 - s)
+    v = v + f * (1 - v)
+    newrgb = colorsys.hsv_to_rgb(h,s,v)
+    return rgb_to_hex( newrgb )
+
+
+colors = [
+    "#2066ab", # dark blue
+    "#3c93c4",
+    "#91c4e1",
+    "#d3e5f3",
+    "#fbdbc6",
+    "#f4a580",
+    "#da6048",
+    "#b11e2a"  # dark red
+]
+
+
+for color in colors:
+    hcolor = highlight(0.5, color)
+    print "\"%s\",    \"%s\"" % (color, hcolor)

@@ -12,6 +12,13 @@ if len(args) < 2:
     sys.exit(0)
 
 outfile = args.pop(0)
-p = pnt.PntFile.avg(args)
+
+pfiles = []
+for arg in args:
+    print "loading %s" % arg
+    pfiles.append(PntFile(arg))
+
+print "computing average"
+p = pnt.PntFile.avg(pfiles)
 print "writing %s" % outfile
 p.write(outfile)

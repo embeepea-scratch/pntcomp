@@ -1,0 +1,73 @@
+#! /usr/bin/env python -u
+
+import pnt, pickle, gzip, os, re, math
+import numpy as np
+
+for year in range(1930,2011):
+    cmd = "./pkz-to-contour-json 30year-running-avg--1901-1930/%4d.pkz" % year
+    print cmd
+
+
+## print "loading base grid"
+## basegrid = pnt.PntGrid.load_pkzfile("tavg-1981-2010--1901-1960.pkz")
+## 
+## for year in range(1930,2011):
+##     print "loading grid for %4d ..." % year,
+##     g = pnt.PntGrid.load_pkzfile("30year-avg-pkz-files/%4d.pkz" % year)
+##     print "computing difference...",
+##     diff = pnt.PntGrid.subtract(g, basegrid)
+##     outfile = "30year-running-avg--1901-1930/%s.pkz" % year
+##     print "writing %s" % outfile,
+##     with gzip.open(outfile, "wb") as f:
+##         pickle.dump(diff, f)
+##     print "done."
+
+
+
+## for y in range(1900, 1930):
+##     print "loading data for %1d" % y
+##     with gzip.open("yearly-avg-pkz-files/%s.pkz" % y, "rb") as f:
+##         grids.append({
+##             'year' : y,
+##             'g'    : pickle.load(f)
+##         })
+## 
+## for y in range(1930, 2011):
+##     grids.pop(0)
+##     print "loading data for %1d" % y
+##     with gzip.open("yearly-avg-pkz-files/%s.pkz" % y, "rb") as f:
+##         grids.append({
+##             'year' : y,
+##             'g'    : pickle.load(f)
+##         })
+##     print "averaging the following years now: %s" % ",".join([str(gd['year']) for gd in grids])
+##     g = pnt.PntGrid()
+##     g.a = np.empty((g.height,g.width))
+##     g.a.fill(np.nan)
+##     ba = grids[0]['g'].a
+##     for i in range(0,g.height):
+##         for j in range(0,g.width):
+##             if not math.isnan(ba[i,j]):
+##                 sum = 0
+##                 for k in range(0,len(grids)):
+##                     sum += grids[k]['g'].a[i,j]
+##                 g.a[i,j] = sum / len(grids)
+##     pickle_file = "30year-avg-pkz-files/%s.pkz" % y
+##     print "writing %s" % pickle_file
+##     with gzip.open(pickle_file, "wb") as f:
+##         pickle.dump(g, f)
+
+
+## filebases = [re.sub(r'\.pnt$', '', file) for file in os.listdir("yearly-avg-pnt-files") if re.match(r'^.*\.pnt', file)]
+## 
+## for base in filebases:
+##     print "%s.pnt: loading ..." % base,
+##     pfile = pnt.PntFile("yearly-avg-pnt-files/%s.pnt" % base)
+##     print "gridding ...",
+##     g = pnt.PntGrid()
+##     g.load_pntfile(pfile)
+##     pickle_file = "yearly-avg-pkz-files/%s.pkz" % base
+##     print "writing %s ..." % pickle_file,
+##     with gzip.open(pickle_file, "wb") as f:
+##         pickle.dump(g, f)
+##     print "done."

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import re
+import re, pickle, gzip, math
 import numpy as np
 
 class LinearFloatIntInterpolator:
@@ -31,27 +31,16 @@ class PntFile:
             for i in range(0,len(self.a)):
                 f.write("%8.4f %9.4f  %7.2f\n" % (self.a[i,1], self.a[i,0], self.a[i,2]))
     @staticmethod
-    def avg(filenames):
-        presult = PntFile()
-        pfiles = []
-        for filename in filenames:
-            print "loading %s" % filename
-            pfiles.append(PntFile(filename))
+    def avg(pfiles):
         nfiles = len(pfiles)
-        print "computing average"
         for i in range(0,presult.npoints):
             presult.a[i,0] = pfiles[0].a[i,0] # x
             presult.a[i,1] = pfiles[0].a[i,1] # y
             presult.a[i,2] = sum( [ p.a[i,2] for p in pfiles ] ) / nfiles
         return presult
     @staticmethod
-    def subtract(filename_a,filename_b):
+    def subtract(pfile_a,pfile_b):
         presult = PntFile()
-        print "loading %s" % filename_a
-        pfile_a = PntFile(filename_a)
-        print "loading %s" % filename_b
-        pfile_b = PntFile(filename_b)
-        print "computing difference"
         for i in range(0,presult.npoints):
             presult.a[i,0] = pfile_a.a[i,0] # x
             presult.a[i,1] = pfile_a.a[i,1] # y
@@ -67,6 +56,10 @@ class PntGrid:
         self.minY     = 24.5625
         self.xTr      = LinearFloatIntInterpolator(self.minX, self.gridsize)
         self.yTr      = LinearFloatIntInterpolator(self.minY, self.gridsize)
+    @staticmethod
+    def load_pkzfile(pkzfile):
+        with gzip.open(pkzfile, "rb") as f:
+            return pickle.load(f)
     def load_pntfile(self,pntfile):
         self.a = np.empty((self.height,self.width))
         self.a.fill(np.nan)
@@ -84,3 +77,30 @@ class PntGrid:
                 self.a[i,j] = p[2]
             except IndexError:
                 print "index out of range for k=%s" % k
+        return self
+    @staticmethod
+    def avg(gs):
+        """Compute and return the average of a list of grid files gs."""
+        g = PntGrid()
+        g.a = np.empty((g.height,g.width))
+        g.a.fill(np.nan)
+        ba = gs[0]['g'].a
+        for i in range(0,g.height):
+            for j in range(0,g.width):
+                if not math.isnan(ba[i,j]):
+                    sum = 0
+                    for k in range(0,len(gs)):
+                        sum += gs[k]['g'].a[i,j]
+                    g.a[i,j] = sum / len(gs)
+        return g
+    @staticmethod
+    def subtract(g1, g2):
+        """Compute and return the difference of two grid file, g1 - g2."""
+        g = PntGrid()
+        g.a = np.empty((g.height,g.width))
+        g.a.fill(np.nan)
+        for i in range(0,g.height):
+            for j in range(0,g.width):
+                if not math.isnan(g1.a[i,j]):
+                    g.a[i,j] = g1.a[i,j] - g2.a[i,j]
+        return g

@@ -33,7 +33,18 @@
 		</style>
 	</head>
 	<body>
-<div id="visdiv"></div>
+<div id="visdiv">
+<svg version="1.1"
+xmlns:svg="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <pattern id="diagonalHatch" patternUnits="userSpaceOnUse"
+     width="8" height="8" patternTransform="rotate(45 2 2)">
+<!--  <rect width="8" height="8" style="fill:#0000ff"/> -->
+      <path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"/>
+    </pattern>
+  </defs>
+</svg></div>
 <div id="legend">
 <div class="legendtitle">Change (&deg;F)</div>
 <table></table>
@@ -45,11 +56,9 @@ var height = 650;
 
 var dataset = [ 5, 10, 15, 20, 25 ];
 
-var svg = d3.select("#visdiv")
-            .append("svg")
+var svg = d3.select("svg")
             .attr("width", width)
             .attr("height",height);
-
 
 			//Define map projection
 			var projection = d3.geo.albersUsa()
@@ -84,21 +93,21 @@ var svg = d3.select("#visdiv")
                        ;
                       if (e) {
                         t.on("mouseover", function () {
-                            t.style("stroke-width", "3");
-                            $legenditembox.css("border", "3px solid black");
+                            t.style("fill", "url(#diagonalHatch)");
+                            $legenditembox.css("background-color", "url(#diagonalHatch)");
                           })
                          .on("mouseout", function () {
-                            t.style("stroke-width", "1");
-                            $legenditembox.css("border", "1px solid black");
+                            t.style("fill", e.color);
+                            $legenditembox.css("background-color", e.color);
                           })
                         $legenditembox
                          .on("mouseover", function () {
-                            t.style("stroke-width", "3");
-                            $legenditembox.css("border", "3px solid black");
+                            t.style("fill", "url(#diagonalHatch)");
+                            $legenditembox.css("background-color", "url(#diagonalHatch)");
                           })
                          .on("mouseout", function () {
-                            t.style("stroke-width", "1");
-                            $legenditembox.css("border", "1px solid black");
+                            t.style("fill", e.color);
+                            $legenditembox.css("background-color", e.color);
                           })
                       }
     			});

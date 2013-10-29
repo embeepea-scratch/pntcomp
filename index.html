@@ -26,6 +26,10 @@
   border: 1px solid black;
   display: inline-block;
 }
+.legenditembox svg {
+  width: 100%;
+  height: 100%;
+}
 .legenditemtext {
   font-weight: bold;
 }
@@ -38,19 +42,84 @@
 xmlns:svg="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
-  <pattern id="diagonalHatch00" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#2066ab"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
-<pattern id="diagonalHatch01" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#3c93c4"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
-<pattern id="diagonalHatch02" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#91c4e1"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
-<pattern id="diagonalHatch03" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#d3e5f3"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
-<pattern id="diagonalHatch04" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#fbdbc6"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
-<pattern id="diagonalHatch05" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#f4a580"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
-<pattern id="diagonalHatch06" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#da6048"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
-<pattern id="diagonalHatch07" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#b11e2a"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+  <pattern id="diagonalHatch00" patternunits="userSpaceOnUse" width="6" height="6" patterntransform="rotate(45 2 2)"><rect width="6" height="6" style="fill:#2066ab"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch01" patternunits="userSpaceOnUse" width="6" height="6" patterntransform="rotate(45 2 2)"><rect width="6" height="6" style="fill:#3c93c4"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch02" patternunits="userSpaceOnUse" width="6" height="6" patterntransform="rotate(45 2 2)"><rect width="6" height="6" style="fill:#91c4e1"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch03" patternunits="userSpaceOnUse" width="6" height="6" patterntransform="rotate(45 2 2)"><rect width="6" height="6" style="fill:#d3e5f3"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch04" patternunits="userSpaceOnUse" width="6" height="6" patterntransform="rotate(45 2 2)"><rect width="6" height="6" style="fill:#fbdbc6"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch05" patternunits="userSpaceOnUse" width="6" height="6" patterntransform="rotate(45 2 2)"><rect width="6" height="6" style="fill:#f4a580"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch06" patternunits="userSpaceOnUse" width="6" height="6" patterntransform="rotate(45 2 2)"><rect width="6" height="6" style="fill:#da6048"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch07" patternunits="userSpaceOnUse" width="6" height="6" patterntransform="rotate(45 2 2)"><rect width="6" height="6" style="fill:#b11e2a"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
 </defs>
 </svg></div>
 <div id="legend">
 <div class="legendtitle">Change (&deg;F)</div>
-<table></table>
+<table>
+<tr class="legenditem level00">
+  <td class="legenditembox">
+    <svg>
+      <rect style="fill:#2066ab;stroke-width:1;stroke:rgb(0,0,0)"/>
+    </svg>
+  </td>
+  <td class="legenditemtext">&lt; -1.5</td>
+</tr>
+<tr class="legenditem level01">
+  <td class="legenditembox">
+    <svg>
+      <rect style="fill:#3c93c4;stroke-width:1;stroke:rgb(0,0,0)"/>
+    </svg>
+  </td>
+  <td class="legenditemtext">-1.5 to -1.0</td>
+</tr>
+<tr class="legenditem level02">
+  <td class="legenditembox">
+    <svg>
+      <rect style="fill:#91c4e1;stroke-width:1;stroke:rgb(0,0,0)"/>
+    </svg>
+  </td>
+  <td class="legenditemtext">-1.0 to -0.5</td>
+</tr>
+<tr class="legenditem level03">
+  <td class="legenditembox">
+    <svg>
+      <rect style="fill:#d3e5f3;stroke-width:1;stroke:rgb(0,0,0)"/>
+    </svg>
+  </td>
+  <td class="legenditemtext">-0.5 to 0.0</td>
+</tr>
+<tr class="legenditem level04">
+  <td class="legenditembox">
+    <svg>
+      <rect style="fill:#fbdbc6;stroke-width:1;stroke:rgb(0,0,0)"/>
+    </svg>
+  </td>
+  <td class="legenditemtext">0.0 to 0.5</td>
+</tr>
+<tr class="legenditem level05">
+  <td class="legenditembox">
+    <svg>
+      <rect style="fill:#f4a580;stroke-width:1;stroke:rgb(0,0,0)"/>
+    </svg>
+  </td>
+  <td class="legenditemtext">0.5 to 1.0</td>
+</tr>
+<tr class="legenditem level06">
+  <td class="legenditembox">
+    <svg>
+      <rect style="fill:#da6048;stroke-width:1;stroke:rgb(0,0,0)"/>
+    </svg>
+  </td>
+  <td class="legenditemtext">1.0 to 1.5</td>
+</tr>
+<tr class="legenditem level07">
+  <td class="legenditembox">
+    <svg>
+      <rect style="fill:#b11e2a;stroke-width:1;stroke:rgb(0,0,0)"/>
+    </svg>
+  </td>
+  <td class="legenditemtext">&gt; 1.5</td>
+</tr>
+</table>
 </div>
 		<script type="text/javascript">
 
@@ -76,14 +145,12 @@ var svg = d3.select("svg")
             function dolevel(jsonfile, classname, style, e) {
                 var g = svg.append("g")
                            .attr("class", classname);
-                var $legenditembox = undefined;
+                var legenditemrect = undefined;
                 if (e) {
-                  $legenditembox = 
-                    $('<tr class="legenditem"><td style="background-color: '+e.color+';" class="legenditembox"></td><td class="legenditemtext">'
-                      + e.legend
-                      + '</td></td>')
-                      .appendTo("#legend table")
-                      .find(".legenditembox");
+                  legenditemrect = d3.select('.legenditem.level'+e.level+' rect').attr({
+                    'width' : 50,
+                    'height' : 20
+                  });
                 }
                 d3.json(jsonfile, function(json) {
                   var t =
@@ -97,20 +164,20 @@ var svg = d3.select("svg")
                       if (e) {
                         t.on("mouseover", function () {
                             t.style("fill", "url(#diagonalHatch"+e.level+")");
-                            $legenditembox.css("background-color", "url(#diagonalHatch)");
+                            legenditemrect.style("fill", "url(#diagonalHatch"+e.level+")");
                           })
                          .on("mouseout", function () {
                             t.style("fill", e.color);
-                            $legenditembox.css("background-color", e.color);
+                            legenditemrect.style("fill", e.color);
                           })
-                        $legenditembox
+                        legenditemrect
                          .on("mouseover", function () {
                             t.style("fill", "url(#diagonalHatch"+e.level+")");
-                            $legenditembox.css("background-color", "url(#diagonalHatch)");
+                            legenditemrect.style("fill", "url(#diagonalHatch"+e.level+")");
                           })
                          .on("mouseout", function () {
                             t.style("fill", e.color);
-                            $legenditembox.css("background-color", e.color);
+                            legenditemrect.style("fill", e.color);
                           })
                       }
     			});

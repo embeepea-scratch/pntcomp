@@ -38,12 +38,15 @@
 xmlns:svg="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
-    <pattern id="diagonalHatch" patternUnits="userSpaceOnUse"
-     width="8" height="8" patternTransform="rotate(45 2 2)">
-<!--  <rect width="8" height="8" style="fill:#0000ff"/> -->
-      <path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"/>
-    </pattern>
-  </defs>
+  <pattern id="diagonalHatch00" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#2066ab"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch01" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#3c93c4"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch02" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#91c4e1"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch03" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#d3e5f3"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch04" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#fbdbc6"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch05" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#f4a580"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch06" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#da6048"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+<pattern id="diagonalHatch07" patternunits="userSpaceOnUse" width="8" height="8" patterntransform="rotate(45 2 2)"><rect width="8" height="8" style="fill:#b11e2a"></rect><path d="M -1,2 l 6,0" stroke="#000000" stroke-width="2"></path></pattern>
+</defs>
 </svg></div>
 <div id="legend">
 <div class="legendtitle">Change (&deg;F)</div>
@@ -93,7 +96,7 @@ var svg = d3.select("svg")
                        ;
                       if (e) {
                         t.on("mouseover", function () {
-                            t.style("fill", "url(#diagonalHatch)");
+                            t.style("fill", "url(#diagonalHatch"+e.level+")");
                             $legenditembox.css("background-color", "url(#diagonalHatch)");
                           })
                          .on("mouseout", function () {
@@ -102,7 +105,7 @@ var svg = d3.select("svg")
                           })
                         $legenditembox
                          .on("mouseover", function () {
-                            t.style("fill", "url(#diagonalHatch)");
+                            t.style("fill", "url(#diagonalHatch"+e.level+")");
                             $legenditembox.css("background-color", "url(#diagonalHatch)");
                           })
                          .on("mouseout", function () {

@@ -1,0 +1,24 @@
+#! /usr/bin/env python -u
+
+import pnt, pickle, gzip, os, re, math, optparse
+import numpy as np
+
+usage = 'pnt-to-pkz FILE.pnt      # (writes FILE.pkz)'
+
+parser = optparse.OptionParser(usage)
+
+(opts, args) = parser.parse_args()
+
+if len(args) != 1:
+    print usage
+    sys.exit(-1)
+
+infile  = args[0]
+outfile = "%s.pkz" % re.sub(r'\.pnt$', '', infile)
+
+pfile = pnt.PntFile(infile)
+g = pnt.PntGrid()
+g.load_pntfile(pfile)
+with gzip.open(outfile, "wb") as f:
+    pickle.dump(g, f)
+print "wrote %s" % outfile

@@ -9,7 +9,7 @@ for year in range(1930,2011):
 
 
 ## print "loading base grid"
-## basegrid = pnt.PntGrid.load_pkzfile("tavg-1981-2010--1901-1960.pkz")
+## basegrid = pnt.PntGrid.load_pkzfile("tavg-1901-1960.pkz")
 ## 
 ## for year in range(1930,2011):
 ##     print "loading grid for %4d ..." % year,

@@ -17,6 +17,8 @@
             "07" : "#b11e2a"
         };
 
+        $('#yearlabel').text("2010");
+
         var svg = d3.select("svg")
                 .attr("width", width)
                 .attr("height",height);
@@ -63,7 +65,7 @@
             }
         }
 
-        d3.json("30year-running-avg--1901-1930/2009.contours.json", function(json) {
+        d3.json("30year-running-avg--1901-1930/2010.contours.json", function(json) {
             var i,
                 level,
                 featureCollection;

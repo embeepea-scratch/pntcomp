@@ -1,0 +1,138 @@
+#! /usr/bin/env python -u
+
+"""
+pkz-running-avg --outdir=DIR --outfile-pattern=PATTERN COUNT FILE_1 FILE_2 [...] FILE_N
+
+Compute a sequence of running averages of pkz files.  COUNT should be
+an integer which is the number of files to average over; the COUNT
+argument should be followed by N filenames.  N must be greater than or
+equal to COUNT.  One output file is generated for each subsequence of
+[FILE_1,...,FILE_N] of length COUNT, starting with
+[FILE_1,...,FILE_COUNT], and ending with
+[FILE_(N-COUNT+1),...,FILE_N].
+
+Each output file is named the same as the last file in its input
+sequence, but with a prefix of "running-avg-" added, unless the
+--outfile-pattern=PATTERN argument is present, in which case PATTERN
+is used to generate the output filenames.  PATTERN should be a printf
+style format string, with a single %s conversion code; the argument to
+the format string for each output file will be the name of the last
+file in the corresponding input sequence, with any suffix (everything
+starting with the last period and continuing to the end of the
+filename) removed.
+
+The output files are written to the current directory, unless the --outdir=DIR
+option is given, in which case they are written to the directory DIR.
+"""
+
+import pnt, pickle, gzip, os, re, math, optparse, sys
+import numpy as np
+
+usage = 'pkz-running-avg --outdir=DIR --outfile-pattern=PATTERN COUNT FILE_1 FILE_2 [...] FILE_N'
+
+parser = optparse.OptionParser(usage)
+
+parser.add_option('--outdir',
+                  help='directory in whicth to write output files',
+                  dest='outdir', type="string", default=".")
+parser.add_option('--outfile-pattern',
+                  help='printf-style pattern for generating output filenames; must contain exactly one %s code',
+                  dest='outfile_pattern', type="string", default="running-avg-%s")
+
+(opts, args) = parser.parse_args()
+
+
+if len(args) == 0:
+    parser.print_help()
+    sys.exit(-1)
+
+if len(args) < 2:
+    print "usage: %s" % usage
+    sys.exit(0)
+
+count = int(args.pop(0))
+
+N = len(args)
+
+if N < count:
+    print "too few input files given"
+    sys.exit(0)
+
+if not os.path.exists(opts.outdir):
+    print "output directory %s does not exist" % opts.outdir
+    sys.exit(0)
+
+if not re.search(r'%s', opts.outfile_pattern):
+    print "outfile-pattern must contain exactly one %s code"
+    sys.exit(0)
+    
+## 
+## 
+## for year in range(1930,2011):
+##     cmd = "./pkz-to-contour-json 30year-running-avg--1901-1930/%4d.pkz" % year
+##     print cmd
+## 
+## 
+## ## print "loading base grid"
+## ## basegrid = pnt.PntGrid.load_pkzfile("tavg-1901-1960.pkz")
+## ## 
+## ## for year in range(1930,2011):
+## ##     print "loading grid for %4d ..." % year,
+## ##     g = pnt.PntGrid.load_pkzfile("30year-avg-pkz-files/%4d.pkz" % year)
+## ##     print "computing difference...",
+## ##     diff = pnt.PntGrid.subtract(g, basegrid)
+## ##     outfile = "30year-running-avg--1901-1930/%s.pkz" % year
+## ##     print "writing %s" % outfile,
+## ##     with gzip.open(outfile, "wb") as f:
+## ##         pickle.dump(diff, f)
+## ##     print "done."
+## 
+## 
+## 
+## ## for y in range(1900, 1930):
+## ##     print "loading data for %1d" % y
+## ##     with gzip.open("yearly-avg-pkz-files/%s.pkz" % y, "rb") as f:
+## ##         grids.append({
+## ##             'year' : y,
+## ##             'g'    : pickle.load(f)
+## ##         })
+## ## 
+## ## for y in range(1930, 2011):
+## ##     grids.pop(0)
+## ##     print "loading data for %1d" % y
+## ##     with gzip.open("yearly-avg-pkz-files/%s.pkz" % y, "rb") as f:
+## ##         grids.append({
+## ##             'year' : y,
+## ##             'g'    : pickle.load(f)
+## ##         })
+## ##     print "averaging the following years now: %s" % ",".join([str(gd['year']) for gd in grids])
+## ##     g = pnt.PntGrid()
+## ##     g.a = np.empty((g.height,g.width))
+## ##     g.a.fill(np.nan)
+## ##     ba = grids[0]['g'].a
+## ##     for i in range(0,g.height):
+## ##         for j in range(0,g.width):
+## ##             if not math.isnan(ba[i,j]):
+## ##                 sum = 0
+## ##                 for k in range(0,len(grids)):
+## ##                     sum += grids[k]['g'].a[i,j]
+## ##                 g.a[i,j] = sum / len(grids)
+## ##     pickle_file = "30year-avg-pkz-files/%s.pkz" % y
+## ##     print "writing %s" % pickle_file
+## ##     with gzip.open(pickle_file, "wb") as f:
+## ##         pickle.dump(g, f)
+## 
+## 
+## ## filebases = [re.sub(r'\.pnt$', '', file) for file in os.listdir("yearly-avg-pnt-files") if re.match(r'^.*\.pnt', file)]
+## ## 
+## ## for base in filebases:
+## ##     print "%s.pnt: loading ..." % base,
+## ##     pfile = pnt.PntFile("yearly-avg-pnt-files/%s.pnt" % base)
+## ##     print "gridding ...",
+## ##     g = pnt.PntGrid()
+## ##     g.load_pntfile(pfile)
+## ##     pickle_file = "yearly-avg-pkz-files/%s.pkz" % base
+## ##     print "writing %s ..." % pickle_file,
+## ##     with gzip.open(pickle_file, "wb") as f:
+## ##         pickle.dump(g, f)
+## ##     print "done."

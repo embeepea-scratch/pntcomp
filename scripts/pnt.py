@@ -84,13 +84,13 @@ class PntGrid:
         g = PntGrid()
         g.a = np.empty((g.height,g.width))
         g.a.fill(np.nan)
-        ba = gs[0]['g'].a
+        ba = gs[0].a
         for i in range(0,g.height):
             for j in range(0,g.width):
                 if not math.isnan(ba[i,j]):
                     sum = 0
                     for k in range(0,len(gs)):
-                        sum += gs[k]['g'].a[i,j]
+                        sum += gs[k].a[i,j]
                     g.a[i,j] = sum / len(gs)
         return g
     @staticmethod

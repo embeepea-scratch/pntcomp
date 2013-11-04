@@ -12,17 +12,24 @@ usage = 'pkz-to-contour-json PKZFILE'
 
 parser = optparse.OptionParser(usage)
 
+parser.add_option('--outfile',
+                  help='name of output file (defaults to input file with .json suffix)',
+                  dest='outfile', type="string")
+
 (opts, args) = parser.parse_args()
 
 if len(args) != 1:
     print usage
     sys.exit(-1)
 
-input_pkz_file = args[0]
+infile = args[0]
 
-g = pnt.PntGrid.load_pkzfile(input_pkz_file)
+if opts.outfile:
+    outfile = opts.outfile
+else:
+    outfile = "%s.contours.json" % re.sub(r'\.pkz$', '', infile)
 
-print "contouring"
+g = pnt.PntGrid.load_pkzfile(infile)
 
 plt.figure()
 
@@ -41,6 +48,24 @@ for coll in collections:
         plist = plist + p.to_polygons()
     polylists.append(plist)
 
+fclist = []
+for i in range(0,len(collections)):
+    fc = geojson.FeatureCollection()
+    level = CS.levels[i]
+    fc.features.append(geojson.MultiPolygonFeature("level-%1d" % i, "level-%1d" % i, polylists[i]))
+    fclist.append(fc)
+
+with open(outfile, "w") as f:
+    f.write("[\n")
+    for i in range(0,len(fclist)):
+        fc = fclist[i]
+        f.write("{\"level\":\"%02d\",\"featureCollection\":%s}%s\n" % (i, fclist[i].toString(), 
+                                                                       ("," if i<(len(fclist)-1) else "")))
+    f.write("]\n")
+print "wrote %s" % outfile
+
+
+
 ## for writing a geomview OFF file:
 ##
 ## gtmp = pnt.PntGrid()
@@ -54,22 +79,3 @@ for coll in collections:
 ##         off.add_face(face)
 ## off.write(output_file_base + ".off")
 
-fclist = []
-for i in range(0,len(collections)):
-    fc = geojson.FeatureCollection()
-    level = CS.levels[i]
-    fc.features.append(geojson.MultiPolygonFeature("level-%1d" % i, "level-%1d" % i, polylists[i]))
-    fclist.append(fc)
-
-
-output_file_base = re.sub(r'\.pkz$', '', input_pkz_file)
-output_file = "%s.contours.json" % output_file_base
-
-with open(output_file, "w") as f:
-    f.write("[\n")
-    for i in range(0,len(fclist)):
-        fc = fclist[i]
-        f.write("{\"level\":\"%02d\",\"featureCollection\":%s}%s\n" % (i, fclist[i].toString(), 
-                                                                       ("," if i<(len(fclist)-1) else "")))
-    f.write("]\n")
-print "wrote %s" % output_file

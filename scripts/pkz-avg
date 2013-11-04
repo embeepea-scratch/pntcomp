@@ -42,7 +42,7 @@ parser.add_option('--outdir',
                   dest='outdir', type="string", default=".")
 parser.add_option('--outfile-pattern',
                   help='printf-style pattern for generating output filenames; must contain exactly one %s code',
-                  dest='outfile_pattern', type="string", default="running-avg-%s")
+                  dest='outfile_pattern', type="string", default="running-avg-%s.pkz")
 parser.add_option('--outfile',
                   help='name of output file (not allowed if --count is given)',
                   dest='outfile', type="string")

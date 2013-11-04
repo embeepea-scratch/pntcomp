@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import pnt, sys, optparse, pickle
+import pnt, sys, optparse, pickle, gzip
 import numpy as np
 
 usage = "usage: pkz-subtract OUTFILE.pkz FILE_A.pkz FILE_B.pkz    # computes OUTFILE.pkz = FILE_A.pkz - FILE_B.pkz"

@@ -1,10 +1,11 @@
 (function($,d3) {
 
+  window.contourmap = function(json_contour_file) {
+
     $(document).ready(function() {
 
         var width = 1400;
         var height = 650;
-
 
         var colors_by_level = {
             "00" : "#2066ab",
@@ -65,7 +66,7 @@
             }
         }
 
-        d3.json("30year-running-avg--1901-1930/2010.contours.json", function(json) {
+        d3.json(json_contour_file, function(json) {
             var i,
                 level,
                 featureCollection;
@@ -77,7 +78,7 @@
                         { "color" : colors_by_level[level], "level" : level });
             }
 
-            d3.json("us-states.json", function(json) {
+            d3.json("data/geo/us-states.json", function(json) {
                 svg.append("g")
                     .attr("class", "level")
                     .selectAll("path")
@@ -93,5 +94,7 @@
 
 
     });
+
+  };
 
 }(jQuery,d3));

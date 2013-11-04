@@ -1,15 +1,11 @@
 (function($) {
 
-    function set_image(prefix, year, month, day) {
-        $('#snapshot_image_620').attr('src', image_620_path(prefix, year, month, day));
-    }
-
     function year_to_img_path(year) {
-        return 'img-' + year + '.png';
+        return 'data/final/22year-anomaly-images/' + year + '.png';
     }
 
-    var first_year = 1930;
-    var last_year = 2010;
+    var first_year = 1916;
+    var last_year = 2012;
 
     function preload_images() {
         var images, syear;
@@ -22,8 +18,8 @@
 
     $('document').ready(function() {
         $('#yearslider').slider({
-            'min' : 1930,
-            'max' : 2010,
+            'min' : 1916,
+            'max' : 2012,
             'change' : function(event, ui) {
                 console.log('change');
             },

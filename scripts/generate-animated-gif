@@ -1,0 +1,15 @@
+#! /bin/bash
+
+convert -delay 30 -loop 0  \
+  data/final/22year-anomaly-images/*.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/22year-anomaly-images/2012.png \
+  data/final/anim.gif

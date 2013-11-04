@@ -1,1 +1,0 @@
-var page = require('webpage').create();page.open('http://localhost/~mbp/mpl/index.html', function () {    page.render('img-2010.png');    phantom.exit();});

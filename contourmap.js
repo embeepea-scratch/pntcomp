@@ -1,6 +1,6 @@
 (function($,d3) {
 
-  window.contourmap = function(json_contour_file) {
+  window.contourmap = function(json_contour_file, year) {
 
     $(document).ready(function() {
 
@@ -18,7 +18,7 @@
             "07" : "#b11e2a"
         };
 
-        $('#yearlabel').text("2010");
+        $('#yearlabel').text(""+year);
 
         var svg = d3.select("svg")
                 .attr("width", width)
